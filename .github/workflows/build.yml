@@ -5,9 +5,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: unzip panchavati_real_world_android.zip
+      - run: unzip kalaram_aaa_android_project.zip
       - name: Fix gradle config
-        working-directory: panchavati_real_world_android
+        working-directory: kalaram_aaa_android_project
         run: |
           cat > settings.gradle <<'EOF'
           pluginManagement {
@@ -23,7 +23,7 @@ jobs:
                   mavenCentral()
               }
           }
-          rootProject.name = "PanchavatiRealWorld3D"
+          rootProject.name = "KalaramMandirAAA"
           include ':app'
           EOF
           printf "android.useAndroidX=true\norg.gradle.jvmargs=-Xmx2g\n" > gradle.properties
@@ -35,8 +35,8 @@ jobs:
         with:
           gradle-version: 8.5
       - run: gradle assembleDebug
-        working-directory: panchavati_real_world_android
+        working-directory: kalaram_aaa_android_project
       - uses: actions/upload-artifact@v4
         with:
-          name: panchavati-real-world-apk
-          path: panchavati_real_world_android/app/build/outputs/apk/debug/app-debug.apk
+          name: kalaram-mandir-apk
+          path: kalaram_aaa_android_project/app/build/outputs/apk/debug/app-debug.apk
