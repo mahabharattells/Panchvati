@@ -1,4 +1,4 @@
-name: Panchvati 
+name: Build APK
 on: [push, workflow_dispatch]
 jobs:
   build:
@@ -6,6 +6,27 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: unzip panchavati_android_project.zip
+      - name: Fix gradle config
+        working-directory: panchavati_android_project
+        run: |
+          cat > settings.gradle <<'EOF'
+          pluginManagement {
+              repositories {
+                  google()
+                  mavenCentral()
+                  gradlePluginPortal()
+              }
+          }
+          dependencyResolutionManagement {
+              repositories {
+                  google()
+                  mavenCentral()
+              }
+          }
+          rootProject.name = "Panchavati3DGame"
+          include ':app'
+          EOF
+          printf "android.useAndroidX=true\norg.gradle.jvmargs=-Xmx2g\n" > gradle.properties
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
